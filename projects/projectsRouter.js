@@ -21,7 +21,7 @@ router.get('/', (req, res) =>{
 
 // GET project with ID
 router.get('/:id', validateProjectId, (req, res) =>{
-    db.get(req.params.id)
+    db.get()
     .then(project =>{
         res.status(200).json(req.project)
     })
@@ -35,9 +35,9 @@ router.get('/:id', validateProjectId, (req, res) =>{
 
 // GET caction with project ID
 router.get('/:id/actions', validateProjectId, (req, res) =>{
-    db.get(req.params.id)
-    .then(project =>{
-
+    actionsDB.get()
+    .then(actions =>{
+        res.status(200).json(actions)
     })
     .catch(error =>{
         console.log(error)
@@ -46,6 +46,26 @@ router.get('/:id/actions', validateProjectId, (req, res) =>{
         })
     })
 });
+
+// ADD a project
+router.post('/', (req, res) =>{
+    db.insert(req.body)
+    .then(project =>{
+        if(!req.body.name || req.body.description){
+            res.status(400).json({
+                errorMessage: 'Please include a name and description'
+            })
+        }else{
+            res.status(201).json(project)
+        }
+    })
+    .catch(error =>{
+        console.log(error)
+        res.status(500).json({
+            errorMessage:'Error creating new project'
+        })
+    })
+})
 
 
 
@@ -63,7 +83,7 @@ function validateProjectId (req, res, next){
             next()
         }else{
             res.status(404).json({
-                message: 'Project Id was not found'
+                message: 'Project with that Id was not found'
             })
         }
     })
