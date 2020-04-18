@@ -4,8 +4,8 @@ const db = require('../data/helpers/actionModel');
 const router = express.Router();
 
 
-// GET caction with project ID
-router.get('/:id/actions', validateProjectId, (req, res) =>{
+// GET cactions by project ID
+router.get('/:id', validateProjectId, (req, res) =>{
     db.get(req.params.id)
     .then(actions =>{
         res.status(200).json(actions)
@@ -17,6 +17,47 @@ router.get('/:id/actions', validateProjectId, (req, res) =>{
         })
     })
 });
+
+// GET all actions
+router.get('/', (req,res)=>{
+    db.get()
+    .then(actions =>{
+        res.status(200).json(actions)
+    })
+    .catch(error =>{
+        console.log(error)
+        res.status(500).json({
+            errorMessage: 'Error returning actions'
+        })
+    })
+});
+
+// Update an action to project
+router.put('/:id', validateProjectId, (req,res) =>{
+    
+    db.update(req.params.id, req.body)
+    .then(action =>{
+        res.status(201).json(action)
+    })
+    .catch(error =>{
+        errorMessage:"Error trying to update an action"
+    })
+});
+
+// Delete action from project
+router.delete('/:id', validateProjectId, (req, res) =>{
+    db.remove(req.params.id)
+    .then(action =>{
+        res.status(200).json(action)
+    })
+    .catch(error =>{
+        console.log(error);
+        res.status(500).json({
+            errorMessage:'Not able to delete action'
+        })
+    })
+});
+
 
 
 
@@ -42,4 +83,4 @@ function validateProjectId (req, res, next){
 };
 
 
-module.exports.router;
+module.exports = router;
