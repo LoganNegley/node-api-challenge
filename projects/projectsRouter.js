@@ -82,6 +82,28 @@ router.delete('/:id', validateProjectId, (req, res) =>{
     })
 });
 
+// UPDATE project 
+router.put('/:id', validateProjectId, (req,res) => {
+    db.update(req.params.id, {
+        name:req.body.name,
+        description: req.body.description
+    })
+    .then(project =>{
+        if(!req.body.name || !req.body.description){
+            res.status(400).json({
+                message: 'You must provide a name and description'
+            })
+        }else{
+            res.status(200).json(projec)
+        }
+    })
+    .catch(error =>{
+        console.log(error);
+        res.status(500).json({
+            errorMessage: 'Project was not able to be updated'
+        })
+    })
+});
 
 
 
