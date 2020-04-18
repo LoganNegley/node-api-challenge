@@ -49,23 +49,23 @@ router.get('/:id/actions', validateProjectId, (req, res) =>{
 
 // ADD a project
 router.post('/', (req, res) =>{
-    db.insert(req.body)
-    .then(project =>{
-        if(!req.body.name || req.body.description){
-            res.status(400).json({
-                errorMessage: 'Please include a name and description'
-            })
-        }else{
-            res.status(201).json(project)
+        if(!req.body.name || !req.body.description){
+        res.status(400).json({
+            errorMessage: 'Please provide name and description'
+        })
         }
-    })
+    db.insert(req.body)
+
+    .then(project =>{
+            res.status(201).json(project)
+        })
     .catch(error =>{
         console.log(error)
         res.status(500).json({
             errorMessage:'Error creating new project'
         })
     })
-})
+});
 
 
 
