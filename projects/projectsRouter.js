@@ -1,6 +1,5 @@
 const express = require('express');
 const db = require('../data/helpers/projectModel');
-const actionsDB = require('../data/helpers/actionModel')
 
 const router = express.Router();
 
@@ -29,20 +28,6 @@ router.get('/:id', validateProjectId, (req, res) =>{
         console.log(error)
         res.status(500).json({
             errorMessage: 'Was not able to retreived project with that ID'
-        })
-    })
-});
-
-// GET caction with project ID
-router.get('/:id/actions', validateProjectId, (req, res) =>{
-    db.getProjectActions(req.params.id)
-    .then(actions =>{
-        res.status(200).json(actions)
-    })
-    .catch(error =>{
-        console.log(error)
-        res.status(500).json({
-            errorMessage: 'Was not able to retreived actions for project'
         })
     })
 });
