@@ -35,7 +35,7 @@ router.get('/:id', validateProjectId, (req, res) =>{
 
 // GET caction with project ID
 router.get('/:id/actions', validateProjectId, (req, res) =>{
-    actionsDB.get()
+    db.getProjectActions(req.params.id)
     .then(actions =>{
         res.status(200).json(actions)
     })
@@ -63,6 +63,21 @@ router.post('/', (req, res) =>{
         console.log(error)
         res.status(500).json({
             errorMessage:'Error creating new project'
+        })
+    })
+});
+
+// DELETE project
+router.delete('/:id', validateProjectId, (req, res) =>{
+    db.remove(req.params.id)
+    .then(project =>{
+        res.status(200).json(project)
+    })
+    .catch(error =>{
+        console.log(error =>{
+            res.status(500).json({
+                errorMessage: 'There was a problem removing project'
+            })
         })
     })
 });
