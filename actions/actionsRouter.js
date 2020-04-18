@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 // GET cactions by project ID
-router.get('/:id', validateProjectId, (req, res) =>{
+router.get('/:id', validateActionId, (req, res) =>{
     db.get(req.params.id)
     .then(actions =>{
         res.status(200).json(actions)
@@ -33,7 +33,7 @@ router.get('/', (req,res)=>{
 });
 
 // Update an action to project
-router.put('/:id', validateProjectId, (req,res) =>{
+router.put('/:id', validateActionId, (req,res) =>{
     
     db.update(req.params.id, req.body)
     .then(action =>{
@@ -45,7 +45,7 @@ router.put('/:id', validateProjectId, (req,res) =>{
 });
 
 // Delete action from project
-router.delete('/:id', validateProjectId, (req, res) =>{
+router.delete('/:id', validateActionId, (req, res) =>{
     db.remove(req.params.id)
     .then(action =>{
         res.status(200).json(action)
@@ -62,7 +62,7 @@ router.delete('/:id', validateProjectId, (req, res) =>{
 
 
 // Custom middleware
-function validateProjectId (req, res, next){
+function validateActionId (req, res, next){
     const { id } = req.params;
     db.get(id)
     .then(action =>{
@@ -71,7 +71,7 @@ function validateProjectId (req, res, next){
             next()
         }else{
             res.status(404).json({
-                message: 'Action with that Id was not found'
+                message: 'Action does not exist'
             })
         }
     })
@@ -81,6 +81,7 @@ function validateProjectId (req, res, next){
         })
     })
 };
+
 
 
 module.exports = router;
