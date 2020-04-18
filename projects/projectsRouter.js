@@ -94,7 +94,7 @@ router.put('/:id', validateProjectId, (req,res) => {
                 message: 'You must provide a name and description'
             })
         }else{
-            res.status(200).json(projec)
+            res.status(200).json(project)
         }
     })
     .catch(error =>{
@@ -104,10 +104,6 @@ router.put('/:id', validateProjectId, (req,res) => {
         })
     })
 });
-
-
-
-
 
 
 // Custom middleware
